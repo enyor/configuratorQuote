@@ -1,0 +1,15 @@
+.pc-feature-block {
+    margin-bottom: 1rem;
+}
+.pc-feature-block label {
+    display: block;
+    font-weight: bold;
+}
+.pc-feature-block select {
+    width: 100%;
+    padding: 0.5rem;
+}
+#pc-sku-display {
+    font-weight: bold;
+    margin: 1rem 0;
+}
