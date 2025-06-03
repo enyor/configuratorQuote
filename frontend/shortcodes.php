@@ -55,3 +55,18 @@ function pc_render_configurator() {
     return ob_get_clean();
 }
 add_shortcode('pc_configurator', 'pc_render_configurator');
+
+function pc_render_cart_shortcode() {
+    ob_start();
+    ?>
+    <div id="pc-cart-root">
+        <p>Cargando carrito...</p>
+    </div>
+    <script>
+        const pc_ajax_url = "<?php echo admin_url('admin-ajax.php'); ?>";
+    </script>
+    <?php
+    wp_enqueue_script('pc-frontend');
+    return ob_get_clean();
+}
+add_shortcode('pc_cart', 'pc_render_cart_shortcode');
