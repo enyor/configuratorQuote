@@ -51,3 +51,33 @@ function pc_get_config() {
     $data = get_post_meta($products[0]->ID, '_pc_characteristics', true);
     wp_send_json_success($data);
 }
+
+add_action('wp_ajax_pc_get_products', 'pc_get_products');
+function pc_get_products() {
+    check_ajax_referer('pc_configurator_nonce', 'nonce');
+
+    $products = get_posts([
+        'post_type' => 'pc_product',
+        'post_status' => 'publish',
+        'numberposts' => -1
+    ]);
+
+    if (!$products) {
+        wp_send_json_error(['message' => 'No hay productos configurables']);
+    }
+
+    $result = [];
+
+    foreach ($products as $product) {
+        $characteristics = get_post_meta($product->ID, '_pc_characteristics', true);
+        if (!$characteristics) continue;
+
+        $result[] = [
+            'ID' => $product->ID,
+            'title' => get_the_title($product),
+            'characteristics' => $characteristics,
+        ];
+    }
+
+    wp_send_json_success($result);
+}
