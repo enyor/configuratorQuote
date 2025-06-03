@@ -75,6 +75,7 @@ function pc_get_products() {
         $result[] = [
             'ID' => $product->ID,
             'title' => get_the_title($product),
+            'base_sku' => get_post_meta($product->ID, '_pc_base_sku', true),
             'characteristics' => $characteristics,
         ];
     }

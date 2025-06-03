@@ -140,7 +140,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function updateSKU(characteristics) {
         state.skuParts = characteristics.map(f => state.selected[f.name]?.sku || '');
-        const skuText = 'SKU: ' + state.skuParts.join('-');
+        const base = productData.data.find(p => p.ID == state.selectedProduct)?.base_sku || '';
+        const skuText = 'SKU: ' + [base, ...state.skuParts].filter(Boolean).join('-');
         const skuEl = document.getElementById('pc-sku-display');
         if (skuEl) skuEl.textContent = skuText;
 

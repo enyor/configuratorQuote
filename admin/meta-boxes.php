@@ -13,6 +13,10 @@ add_action('add_meta_boxes', function() {
 function pc_render_characteristics_metabox($post) {
     wp_nonce_field('pc_save_characteristics', 'pc_characteristics_nonce');
     $data = get_post_meta($post->ID, '_pc_characteristics', true) ?: [];
+    $base_sku = get_post_meta($post->ID, '_pc_base_sku', true);
+
+    echo '<label><strong>SKU Base del Producto:</strong></label><br>';
+    echo '<input type="text" name="pc_base_sku" value="' . esc_attr($base_sku) . '" class="widefat" /><br><br>';
 
     echo '<div id="pc-characteristics-wrapper">';
     echo '<button type="button" class="button" id="add-characteristic">Agregar Característica</button>';
@@ -81,4 +85,7 @@ add_action('save_post_pc_product', function($post_id) {
     }
     $data = $_POST['characteristics'] ?? [];
     update_post_meta($post_id, '_pc_characteristics', $data);
+    if (isset($_POST['pc_base_sku'])) {
+        update_post_meta($post_id, '_pc_base_sku', sanitize_text_field($_POST['pc_base_sku']));
+    }
 });
