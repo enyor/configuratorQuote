@@ -40,12 +40,14 @@ add_action('wp_ajax_pc_get_config', 'pc_get_config');
 function pc_get_config() {
     check_ajax_referer('pc_configurator_nonce', 'nonce');
 
-    // Recuperar características del backend
-    $features = get_option('pc_features', []);
-    $features = array_map(function($f) {
-        $f['items'] = isset($f['items']) ? $f['items'] : [];
-        return $f;
-    }, $features);
+    // Obtener el primer producto (ejemplo simple)
+    $products = get_posts([
+        'post_type' => 'pc_product',
+        'posts_per_page' => 1,
+    ]);
 
-    wp_send_json_success($features);
+    if (!$products) wp_send_json_error();
+
+    $data = get_post_meta($products[0]->ID, '_pc_characteristics', true);
+    wp_send_json_success($data);
 }

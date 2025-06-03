@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const root = document.getElementById('pc-configurator-root');
     const cart = [];
 
-    // Obtener estructura de producto desde AJAX
     const res = await fetch(pc_ajax_url + '?action=pc_get_config&nonce=' + pc_nonce);
     const config = await res.json();
 
@@ -48,17 +47,31 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const opt = document.createElement('option');
                 opt.value = JSON.stringify(item);
                 opt.textContent = item.name;
+                
+                const previouslySelected = state.selected[feature.name]?.name;
+                if (previouslySelected && item.name === previouslySelected) {
+                    opt.selected = true;
+                }
+
                 select.appendChild(opt);
             });
 
             select.addEventListener('change', (e) => {
                 const selectedItem = JSON.parse(e.target.value || 'null');
-                state.selected[feature.name] = selectedItem;
-                if (index === 0) {
-                    state.baseFilter = selectedItem?.name || '';
+                if (!selectedItem) return;
+
+                const isFirst = feature.name === data[0].name;
+
+                if (isFirst) {
+                    // Al cambiar la PRIMERA característica, se reinician las demás
+                    state.selected = { [feature.name]: selectedItem };
+                    state.baseFilter = selectedItem.name || '';
+                    renderForm(); // Redibuja dropdowns aplicando filtro
+                } else {
+                    // Para características secundarias, solo actualiza
+                    state.selected[feature.name] = selectedItem;
+                    updateSKU();
                 }
-                updateSKU();
-                renderForm(); // rerender for dynamic filtering
             });
 
             field.appendChild(select);
@@ -76,7 +89,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         addButton.disabled = data.some(f => !state.selected[f.name]);
 
         addButton.addEventListener('click', () => {
-            cart.push({ ...state.selected });
+            const copy = JSON.parse(JSON.stringify(state.selected));
+            cart.push(copy);
             alert('Producto agregado al carrito');
         });
 
@@ -87,7 +101,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     function updateSKU() {
         state.skuParts = data.map(f => state.selected[f.name]?.sku || '');
         const skuText = 'SKU: ' + state.skuParts.join('-');
-        document.getElementById('pc-sku-display')?.textContent = skuText;
+        const skuEl = document.getElementById('pc-sku-display');
+        if (skuEl) skuEl.textContent = skuText;
     }
 
     renderForm();

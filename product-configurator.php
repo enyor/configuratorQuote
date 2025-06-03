@@ -12,6 +12,7 @@ require_once plugin_dir_path(__FILE__) . 'includes/post-types.php';
 require_once plugin_dir_path(__FILE__) . 'admin/settings.php';
 require_once plugin_dir_path(__FILE__) . 'frontend/ajax.php';
 require_once plugin_dir_path(__FILE__) . 'frontend/shortcodes.php';
+require_once plugin_dir_path(__FILE__) . 'admin/meta-boxes.php';
 
 function pc_enqueue_scripts() {
     if (is_user_logged_in()) {

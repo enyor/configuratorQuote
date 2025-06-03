@@ -1,13 +1,27 @@
 <?php
-function pc_register_quote_post_type() {
-    register_post_type('pc_quote', [
-        'labels' => ['name' => 'Quotes', 'singular_name' => 'Quote'],
+function pc_register_custom_post_types() {
+    // Productos configurables
+    register_post_type('pc_product', [
+        'labels' => [
+            'name' => 'Productos Configurables',
+            'singular_name' => 'Producto Configurable',
+        ],
         'public' => false,
-        'has_archive' => false,
+        'show_ui' => true,
+        'menu_icon' => 'dashicons-cart',
+        'supports' => ['title']
+    ]);
+
+    // Cotizaciones
+    register_post_type('pc_quote', [
+        'labels' => [
+            'name' => 'Cotizaciones',
+            'singular_name' => 'Cotización',
+        ],
+        'public' => false,
         'show_ui' => true,
         'menu_icon' => 'dashicons-clipboard',
-        'supports' => ['title', 'custom-fields'],
-        'capability_type' => 'post',
+        'supports' => ['title', 'custom-fields']
     ]);
 }
-add_action('init', 'pc_register_quote_post_type');
+add_action('init', 'pc_register_custom_post_types');
