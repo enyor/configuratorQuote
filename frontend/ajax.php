@@ -28,6 +28,20 @@ function pc_send_quote() {
             'products' => wp_json_encode($payload['products']),
         ]
     ]);
+    $rownum = 1;
+    foreach ($payload['products'] as &$product) {
+        $product['qty'] = isset($product['qty']) ? intval($product['qty']) : 1;
+        $product['line'] = $rownum;
+
+        $lines = [];
+        
+        foreach ($product['configuration'] as $opt) {
+            $lines[] = "{$opt['name']}: {$opt['label']}";
+        }
+        $product['description'] = implode("\\n", $lines); // descripción para ese producto
+        $rownum++;
+    }
+    unset($product);
 
     if ($endpoint) {
         $response = wp_remote_post($endpoint, [
