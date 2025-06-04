@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderProductSelector();
 
     function renderProductSelector() {
-        root.innerHTML = '<h3>Selecciona un producto</h3>';
+        root.innerHTML = '<h3>Select a product</h3>';
         const select = document.createElement('select');
         select.innerHTML = '<option value="">-- Selecciona producto --</option>';
         productData.data.forEach(prod => {
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const selectedID = select.value;
             if (!selectedID) {
                 state.selectedProduct = null;
-                root.innerHTML = '<p>Por favor selecciona un producto</p>';
+                root.innerHTML = '<p>Please select a product</p>';
                 return;
             }
 
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         let stored = JSON.parse(localStorage.getItem('pc_cart')) || [];
         stored.push(product);
         localStorage.setItem('pc_cart', JSON.stringify(stored));
-        alert('Producto agregado al carrito');
+        alert('Product added to cart');
     });
 
         form.appendChild(addButton);

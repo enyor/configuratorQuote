@@ -1,6 +1,6 @@
 <?php
 function pc_quote_history_shortcode() {
-    if (!is_user_logged_in()) return '<p>Debes estar logueado para ver tus cotizaciones.</p>';
+    if (!is_user_logged_in()) return '<p>You must be logged in to view your quotes.</p>';
 
     $user_id = get_current_user_id();
     $quotes = get_posts([
@@ -12,9 +12,9 @@ function pc_quote_history_shortcode() {
         'order' => 'DESC',
     ]);
 
-    if (!$quotes) return '<p>No tienes cotizaciones registradas.</p>';
+    if (!$quotes) return '<p>You have no quotes on record.</p>';
 
-    $html = '<h3>Historial de Cotizaciones</h3>';
+    $html = '<h3>Quote History</h3>';
 
     foreach ($quotes as $quote) {
         $products = json_decode(get_post_meta($quote->ID, 'products', true), true);
@@ -37,7 +37,7 @@ function pc_quote_history_shortcode() {
                   </tr></thead><tbody>";
 
         foreach ($products as $index => $product) {
-            $product_name = esc_html($product['title'] ?? 'Producto sin título'); // Valor estático por ahora, si guardas el título, cámbialo aquí.
+            $product_name = esc_html($product['title'] ?? 'Product no title'); // Valor estático por ahora, si guardas el título, cámbialo aquí.
             $sku = esc_html($product['sku']);
             $total_price = esc_html($product['total_price']);
             $qty = isset($product['qty']) ? intval($product['qty']) : 1;
@@ -74,7 +74,27 @@ add_shortcode('pc_quote_history', 'pc_quote_history_shortcode');
 
 function pc_render_configurator() {
     if (!is_user_logged_in()) {
-        return '<p>Debes iniciar sesión para acceder al configurador.</p>';
+        ob_start();
+        echo '<p>You must be logged in to access the configurator.</p>';
+        
+        // Mostrar errores si existen (como hace wp-login.php)
+        if (isset($_GET['login']) && $_GET['login'] === 'failed') {
+            echo '<div style="color:red;">Incorrect username or password.</div>';
+        }
+
+        $args = [
+            'echo'           => true,
+            'redirect'       => esc_url($_SERVER['REQUEST_URI']),
+            'form_id'        => 'pc-loginform',
+            'label_username' => 'Username',
+            'label_password' => 'Password',
+            'label_remember' => 'Remember me',
+            'label_log_in'   => 'Log In',
+            'remember'       => true
+        ];
+
+        wp_login_form($args);
+        return ob_get_clean();
     }
 
     ob_start();
@@ -95,7 +115,7 @@ function pc_render_cart_shortcode() {
     ob_start();
     ?>
     <div id="pc-cart-root">
-        <p>Cargando carrito...</p>
+        <p>Loading cart...</p>
     </div>
     <script>
         const pc_ajax_url = "<?php echo admin_url('admin-ajax.php'); ?>";

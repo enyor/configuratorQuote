@@ -51,7 +51,7 @@ function pc_send_quote() {
         ]);
     }
 
-    wp_send_json_success(['message' => 'Cotización guardada y enviada.']);
+    wp_send_json_success(['message' => 'Quote saved and sent.']);
 }
 
 add_action('wp_ajax_pc_get_config', 'pc_get_config');
@@ -81,7 +81,7 @@ function pc_get_products() {
     ]);
 
     if (!$products) {
-        wp_send_json_error(['message' => 'No hay productos configurables']);
+        wp_send_json_error(['message' => 'No configurable products found.']);
     }
 
     $result = [];

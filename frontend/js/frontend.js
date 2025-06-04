@@ -6,7 +6,7 @@ jQuery(document).ready(function($) {
 
     function renderCart() {
         if (products.length === 0) {
-            root.html('<p>Tu carrito está vacío.</p>');
+            root.html('<p>Your cart is empty.</p>');
             return;
         }
 
@@ -96,7 +96,7 @@ jQuery(document).ready(function($) {
         let author = typeof pc_current_user_id !== 'undefined' ? pc_current_user_id : null;
 
         if (!customer_id || !email || !tier ||!phone) {
-            alert('Completa todos los campos');
+            alert('Complete all fields');
             return;
         }
 
