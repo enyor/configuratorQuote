@@ -4,11 +4,14 @@ add_action('wp_ajax_pc_send_quote', 'pc_send_quote');
 function pc_send_quote() {
     $data = $_POST['data'];
     $endpoint = get_option('pc_request_quote_url');
+    $post_author = isset($data['author']) ? intval($data['author']) : get_current_user_id();
 
     $payload = [
         'customer_id' => sanitize_text_field($data['customer_id']),
         'email' => sanitize_email($data['email']),
+        'phone' => sanitize_text_field($data['phone']),
         'tier' => sanitize_text_field($data['tier']),
+        'post_author' => $post_author,
         'products' => $data['products']
     ];
 
@@ -20,6 +23,7 @@ function pc_send_quote() {
         'meta_input' => [
             'customer_id' => $payload['customer_id'],
             'email' => $payload['email'],
+            'phone' => $payload['phone'],
             'tier' => $payload['tier'],
             'products' => wp_json_encode($payload['products']),
         ]

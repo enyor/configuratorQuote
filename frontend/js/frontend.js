@@ -53,6 +53,7 @@ jQuery(document).ready(function($) {
             <h4 style="margin-top:20px;">Enviar Cotización</h4>
             <input type="text" id="pc-customer-id" placeholder="Customer ID"><br><br>
             <input type="email" id="pc-email" placeholder="Email"><br><br>
+            <input type="text" id="pc-phone" placeholder="Teléfono"><br><br>
             <select id="pc-tier">
                 <option value="">Selecciona Tier</option>
                 <option value="Tier 1">Tier 1</option>
@@ -91,15 +92,17 @@ jQuery(document).ready(function($) {
         let customer_id = $('#pc-customer-id').val();
         let email = $('#pc-email').val();
         let tier = $('#pc-tier').val();
+        let phone = $('#pc-phone').val();
+        let author = typeof pc_current_user_id !== 'undefined' ? pc_current_user_id : null;
 
-        if (!customer_id || !email || !tier) {
+        if (!customer_id || !email || !tier ||!phone) {
             alert('Completa todos los campos');
             return;
         }
 
         $.post(pc_ajax_url, {
             action: 'pc_send_quote',
-            data: { customer_id, email, tier, products }
+            data: { customer_id, email, phone, tier, products, author }
         }, function(response) {
             alert(response.data.message);
             localStorage.removeItem('pc_cart');

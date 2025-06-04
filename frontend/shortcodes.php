@@ -99,6 +99,7 @@ function pc_render_cart_shortcode() {
     </div>
     <script>
         const pc_ajax_url = "<?php echo admin_url('admin-ajax.php'); ?>";
+        const pc_current_user_id = <?php echo get_current_user_id(); ?>;
     </script>
     <?php
     wp_enqueue_script('pc-frontend');
