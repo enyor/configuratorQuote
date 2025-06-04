@@ -129,23 +129,26 @@ document.addEventListener('DOMContentLoaded', async () => {
         addButton.disabled = !characteristics.every(f => state.selected[f.name]);
 
         addButton.addEventListener('click', () => {
-            const copy = JSON.parse(JSON.stringify(state.selected));
-            const product = {
-                configuration: Object.entries(copy).map(([name, data]) => ({
-                    name,
-                    label: data.name,
-                    sku: data.sku,
-                    price: parseFloat(data.price)
-                })),
-                total_price: Object.values(copy).reduce((sum, i) => sum + parseFloat(i.price), 0),
-                sku: [productData.data.find(p => p.ID == state.selectedProduct)?.base_sku, ...Object.values(copy).map(i => i.sku)].filter(Boolean).join('-')
-            };
+        const copy = JSON.parse(JSON.stringify(state.selected));
+        const productInfo = productData.data.find(p => p.ID == state.selectedProduct);
 
-            let stored = JSON.parse(localStorage.getItem('pc_cart')) || [];
-            stored.push(product);
-            localStorage.setItem('pc_cart', JSON.stringify(stored));
-            alert('Producto agregado al carrito');
-        });
+        const product = {
+            title: productInfo.title, // Guardamos el nombre del producto
+            configuration: Object.entries(copy).map(([name, data]) => ({
+                name,
+                label: data.name,
+                sku: data.sku,
+                price: parseFloat(data.price)
+            })),
+            total_price: Object.values(copy).reduce((sum, i) => sum + parseFloat(i.price), 0),
+            sku: [productInfo.base_sku, ...Object.values(copy).map(i => i.sku)].filter(Boolean).join('-')
+        };
+
+        let stored = JSON.parse(localStorage.getItem('pc_cart')) || [];
+        stored.push(product);
+        localStorage.setItem('pc_cart', JSON.stringify(stored));
+        alert('Producto agregado al carrito');
+    });
 
         form.appendChild(addButton);
         updateSKU(characteristics);

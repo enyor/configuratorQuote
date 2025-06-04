@@ -10,21 +10,49 @@ jQuery(document).ready(function($) {
             return;
         }
 
-        let html = '<h3>Carrito de Cotización</h3><ul>';
+        let html = `
+            <table style="width:100%; border-collapse:collapse; margin-bottom:20px;">
+                <thead>
+                    <tr style="border-bottom:1px solid #ccc;">
+                        <th style="text-align:left;">ITEM</th>
+                        <th style="text-align:left;">REMARKS WITH PRODUCT</th>
+                        <th style="text-align:left; width:80px;">QTY</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
         products.forEach((p, index) => {
-            html += '<li><strong>Producto #' + (index + 1) + '</strong><br>SKU: ' + p.sku + '<br>Precio Total: ' + p.total_price + '<ul>';
-            p.configuration.forEach(opt => {
-                html += '<li>' + opt.name + ': ' + opt.label + ' (' + opt.price + ')</li>';
-            });
-            html += '</ul></li>';
+            const itemDetails = p.configuration.map(c => `${c.name}: ${c.label}`).join('<br>');
+            const warning = p.backorder ? `<div style="background:#fff3cd; color:#856404; padding:10px; border:1px solid #ffeeba; margin-top:10px;">
+                ⚠️ We're sending what we have now. The remaining ${p.backorder} item(s) will ship soon as it's back in stock.
+            </div>` : '';
+
+            html += `
+                <tr style="border-bottom:1px solid #eee;">
+                    <td style="vertical-align:top; padding:10px;">
+                        <strong>${p.title || 'Producto sin título'}</strong><br>
+                        <small>SKU: ${p.sku}</small><br><br>
+                        ${itemDetails}
+                        ${warning}
+                    </td>
+                    <td style="padding:10px;">
+                        <textarea style="width:100%;" rows="4" class="pc-remark" data-index="${index}">${p.remark || ''}</textarea>
+                    </td>
+                    <td style="padding:10px;">
+                        <input type="number" min="1" value="${p.qty || 1}" class="pc-qty" data-index="${index}" style="width:60px;" />
+                    </td>
+                </tr>
+            `;
         });
-        html += '</ul>';
+
+        html += `</tbody></table>`;
 
         html += `
             <button id="pc-clear-cart">Vaciar Carrito</button>
-            <h4>Enviar Cotización</h4>
-            <input type="text" id="pc-customer-id" placeholder="Customer ID"><br>
-            <input type="email" id="pc-email" placeholder="Email"><br>
+            <h4 style="margin-top:20px;">Enviar Cotización</h4>
+            <input type="text" id="pc-customer-id" placeholder="Customer ID"><br><br>
+            <input type="email" id="pc-email" placeholder="Email"><br><br>
             <select id="pc-tier">
                 <option value="">Selecciona Tier</option>
                 <option value="Tier 1">Tier 1</option>
@@ -34,8 +62,21 @@ jQuery(document).ready(function($) {
             </select><br><br>
             <button id="pc-send-quote">Send Request Quote</button>
         `;
+
         root.html(html);
     }
+
+    root.on('change', '.pc-remark', function() {
+        const index = $(this).data('index');
+        products[index].remark = $(this).val();
+        localStorage.setItem('pc_cart', JSON.stringify(products));
+    });
+
+    root.on('change', '.pc-qty', function() {
+        const index = $(this).data('index');
+        products[index].qty = parseInt($(this).val()) || 1;
+        localStorage.setItem('pc_cart', JSON.stringify(products));
+    });
 
     renderCart();
 
@@ -62,6 +103,7 @@ jQuery(document).ready(function($) {
         }, function(response) {
             alert(response.data.message);
             localStorage.removeItem('pc_cart');
+            products = [];
             renderCart();
         });
     });
