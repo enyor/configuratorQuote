@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     function renderProductSelector() {
         root.innerHTML = '<h3>Select a product</h3>';
         const select = document.createElement('select');
-        select.innerHTML = '<option value="">-- Selecciona producto --</option>';
+        select.innerHTML = '<option value="">-- Select product --</option>';
         productData.data.forEach(prod => {
             const opt = document.createElement('option');
             opt.value = prod.ID;
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const defaultOption = document.createElement('option');
             defaultOption.value = '';
-            defaultOption.textContent = '-- Seleccionar --';
+            defaultOption.textContent = '-- Select --';
             select.appendChild(defaultOption);
 
             const items = feature.items.filter(item => {
@@ -125,6 +125,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const addButton = document.createElement('button');
         addButton.type = 'button';
+        addButton.id = 'pc-add-to-quote';
         addButton.textContent = 'Add to Quote';
         addButton.disabled = !characteristics.every(f => state.selected[f.name]);
 
@@ -162,7 +163,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (skuEl) skuEl.textContent = skuText;
 
         // Habilitar botón si todas las características están seleccionadas
-        const addBtn = document.querySelector('button[type="button"]');
+        const addBtn = document.getElementById('pc-add-to-quote');
         if (addBtn) {
             addBtn.disabled = !characteristics.every(f => state.selected[f.name]);
         }

@@ -49,13 +49,13 @@ jQuery(document).ready(function($) {
         html += `</tbody></table>`;
 
         html += `
-            <button id="pc-clear-cart">Vaciar Carrito</button>
+            <button id="pc-clear-cart">Clean Cart</button>
             <h4 style="margin-top:20px;">Enviar Cotización</h4>
             <input type="text" id="pc-customer-id" placeholder="Customer ID"><br><br>
             <input type="email" id="pc-email" placeholder="Email"><br><br>
             <input type="text" id="pc-phone" placeholder="Teléfono"><br><br>
             <select id="pc-tier">
-                <option value="">Selecciona Tier</option>
+                <option value="">Select Tier</option>
                 <option value="Tier 1">Tier 1</option>
                 <option value="Tier 2">Tier 2</option>
                 <option value="Tier 3">Tier 3</option>
