@@ -123,6 +123,7 @@ function pc_render_cart_shortcode() {
     </script>
     <?php
     wp_enqueue_script('pc-frontend');
+    wp_enqueue_style('pc-configurator-frontend');
     return ob_get_clean();
 }
 add_shortcode('pc_cart', 'pc_render_cart_shortcode');

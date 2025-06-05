@@ -127,6 +127,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         addButton.type = 'button';
         addButton.id = 'pc-add-to-quote';
         addButton.textContent = 'Add to Quote';
+        addButton.classList.add('pc-button');
         addButton.disabled = !characteristics.every(f => state.selected[f.name]);
 
         addButton.addEventListener('click', () => {

@@ -3,7 +3,7 @@
 Plugin Name: Product Configurator
 Description: Plugin para configurar productos personalizados con cotización.
 Version: 1.0
-Author: Frank_lions
+Author: Enyor Piña | DanielDev
 */
 
 if (!defined('ABSPATH')) exit;

@@ -49,7 +49,7 @@ jQuery(document).ready(function($) {
         html += `</tbody></table>`;
 
         html += `
-            <button id="pc-clear-cart">Clean Cart</button>
+            <button id="pc-clear-cart" class="pc-button">Clean Cart</button>
             <h4 style="margin-top:20px;">Enviar Cotización</h4>
             <input type="text" id="pc-customer-id" placeholder="Customer ID"><br><br>
             <input type="email" id="pc-email" placeholder="Email"><br><br>
@@ -61,7 +61,7 @@ jQuery(document).ready(function($) {
                 <option value="Tier 2">Tier 2</option>
                 <option value="Tier 3">Tier 3</option>
             </select><br><br>
-            <button id="pc-send-quote">Send Request Quote</button>
+            <button id="pc-send-quote" class="pc-button">Send Request Quote</button>
         `;
 
         root.html(html);
@@ -89,6 +89,7 @@ jQuery(document).ready(function($) {
 
     root.on('click', '#pc-send-quote', function(e) {
         e.preventDefault();
+        let $btn = $(this);
         let customer_id = $('#pc-customer-id').val();
         let email = $('#pc-email').val();
         let tier = $('#pc-tier').val();
@@ -100,6 +101,8 @@ jQuery(document).ready(function($) {
             return;
         }
 
+        $btn.prop('disabled', true).text('Sending...');
+
         $.post(pc_ajax_url, {
             action: 'pc_send_quote',
             data: { customer_id, email, phone, tier, products, author }
@@ -108,6 +111,10 @@ jQuery(document).ready(function($) {
             localStorage.removeItem('pc_cart');
             products = [];
             renderCart();
+        }).fail(() => {
+            alert('Error sending the quote.');
+        }).always(() => {
+            $btn.prop('disabled', false).text('Send Request Quote');
         });
     });
 });

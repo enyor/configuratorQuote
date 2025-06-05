@@ -5,6 +5,8 @@ function pc_send_quote() {
     $data = $_POST['data'];
     $endpoint = get_option('pc_request_quote_url');
     $post_author = isset($data['author']) ? intval($data['author']) : get_current_user_id();
+    $author_user = get_user_by('id', $post_author);
+    $author_email = $author_user ? $author_user->user_email : '';
 
     $payload = [
         'customer_id' => sanitize_text_field($data['customer_id']),
@@ -12,6 +14,7 @@ function pc_send_quote() {
         'phone' => sanitize_text_field($data['phone']),
         'tier' => sanitize_text_field($data['tier']),
         'post_author' => $post_author,
+        'author_email'  => sanitize_email($author_email),
         'products' => $data['products']
     ];
 
