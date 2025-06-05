@@ -56,10 +56,10 @@ jQuery(document).ready(function($) {
             <input type="text" id="pc-phone" placeholder="Teléfono"><br><br>
             <select id="pc-tier">
                 <option value="">Select Tier</option>
+                <option value="No Tier">No Tier</option>
                 <option value="Tier 1">Tier 1</option>
                 <option value="Tier 2">Tier 2</option>
                 <option value="Tier 3">Tier 3</option>
-                <option value="Tier 4">Tier 4</option>
             </select><br><br>
             <button id="pc-send-quote">Send Request Quote</button>
         `;

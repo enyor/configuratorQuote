@@ -33,10 +33,31 @@ function pc_send_quote() {
         $product['qty'] = isset($product['qty']) ? intval($product['qty']) : 1;
         $product['line'] = $rownum;
 
+        $total = 0;
+        foreach ($product['configuration'] as $opt) {
+            $total += floatval($opt['price']);
+        }
+
+        // Aplicar descuento por Tier
+        $tier = strtolower($payload['tier']);
+        $discounts = [
+            'tier 1'   => 0.32,
+            'tier 2'   => 0.25,
+            'tier 3'   => 0.15,
+            'no tier'  => 0
+        ];
+        $discount = $discounts[$tier] ?? 0;
+        $discounted = $total * (1 - $discount);
+
+        $product['total_price'] = round($discounted, 2); // precio final con descuento
+        $product['raw_price'] = round($total, 2);        // precio sin descuento
+        $product['discount_percent'] = $discount * 100;
+
         $lines = [];
         
         foreach ($product['configuration'] as $opt) {
-            $lines[] = "{$opt['name']}: {$opt['label']}";
+            $label = str_replace(['\"', '"'], 'in.', $opt['label']);
+            $lines[] = "{$opt['name']}: {$label}";
         }
         $product['description'] = implode("\\n", $lines); // descripción para ese producto
         $rownum++;
