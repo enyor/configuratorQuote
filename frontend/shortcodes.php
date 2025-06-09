@@ -28,6 +28,7 @@ function pc_quote_history_shortcode() {
         $html .= "<strong>Customer ID:</strong> {$customer_id}<br>";
         $html .= "<strong>Email:</strong> {$email}<br>";
         $html .= "<strong>Tier:</strong> {$tier}<br><br>";
+        $html .= "<strong>Payment Terms:</strong> {$payment_terms}<br>";
 
         $html .= "<table style='width:100%; border-collapse:collapse;'>";
         $html .= "<thead><tr style='border-bottom:1px solid #ccc;'>

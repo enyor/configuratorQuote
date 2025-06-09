@@ -15,7 +15,8 @@ function pc_send_quote() {
         'tier' => sanitize_text_field($data['tier']),
         'post_author' => $post_author,
         'author_email'  => sanitize_email($author_email),
-        'products' => $data['products']
+        'products' => $data['products'],
+        'payment_terms' => sanitize_text_field($data['payment_terms'])
     ];
 
     $post_id = wp_insert_post([
@@ -28,6 +29,7 @@ function pc_send_quote() {
             'email' => $payload['email'],
             'phone' => $payload['phone'],
             'tier' => $payload['tier'],
+            'payment_terms' => $payload['payment_terms'],
             'products' => wp_json_encode($payload['products']),
         ]
     ]);

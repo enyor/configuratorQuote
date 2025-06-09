@@ -61,6 +61,36 @@ jQuery(document).ready(function($) {
                 <option value="Tier 2">Tier 2</option>
                 <option value="Tier 3">Tier 3</option>
             </select><br><br>
+            <select id="pc-payment-terms">
+                <option value="TBD" selected>TBD - To Be Determined</option>
+                <option value=".5%">0.5% 10, Net 30</option>
+                <option value="1%">1/15, Net 30</option>
+                <option value="2%">2/10, Net 30</option>
+                <option value="51P">5th 1st Prox</option>
+                <option value="52P">5th 2nd Prox</option>
+                <option value="53P">5th 3rd Prox</option>
+                <option value="54P">5th 4th Prox</option>
+                <option value="ADV">Pay in Advance</option>
+                <option value="D50">50% Down, Net 30 on Balance</option>
+                <option value="E30">Net 30 End of Month</option>
+                <option value="IMM">Immediate Pay</option>
+                <option value="N12">Net 120</option>
+                <option value="N15">Net 15</option>
+                <option value="N20">Net 20</option>
+                <option value="N30">Net 30</option>
+                <option value="N35">Net 35</option>
+                <option value="N37">Net 37</option>
+                <option value="N45">Net 45</option>
+                <option value="N5">Net 5</option>
+                <option value="N50">Net 50</option>
+                <option value="N60">Net 60</option>
+                <option value="N70">Net 70</option>
+                <option value="N75">Net 75</option>
+                <option value="N8">Net 8</option>
+                <option value="N80">Net 80</option>
+                <option value="N85">Net 85</option>
+                <option value="N90">Net 90</option>
+            </select><br><br>
             <button id="pc-send-quote" class="pc-button">Send Request Quote</button>
         `;
 
@@ -95,6 +125,7 @@ jQuery(document).ready(function($) {
         let tier = $('#pc-tier').val();
         let phone = $('#pc-phone').val();
         let author = typeof pc_current_user_id !== 'undefined' ? pc_current_user_id : null;
+        let payment_terms = $('#pc-payment-terms').val();
 
         if (!customer_id || !email || !tier ||!phone) {
             alert('Complete all fields');
@@ -105,7 +136,7 @@ jQuery(document).ready(function($) {
 
         $.post(pc_ajax_url, {
             action: 'pc_send_quote',
-            data: { customer_id, email, phone, tier, products, author }
+            data: { customer_id, email, phone, tier, products, author, payment_terms }
         }, function(response) {
             alert(response.data.message);
             localStorage.removeItem('pc_cart');
