@@ -80,6 +80,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             select.appendChild(defaultOption);
 
             const items = feature.items.filter(item => {
+                const hideFeature = item.hide_if_feature;
+                const hideValue = item.hide_if_value;
+                
+                const shouldHide = hideFeature && hideValue &&
+                    state.selected[hideFeature]?.name === hideValue;
+
+                if (shouldHide) return false;
+
+                // Filtro existente por baseFilter
                 if (index === 0) return true;
                 if (!state.baseFilter) return true;
                 return item.name.startsWith('ALL -') || item.name.startsWith(state.baseFilter);
@@ -102,16 +111,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const selectedItem = JSON.parse(e.target.value || 'null');
                 if (!selectedItem) return;
 
+                state.selected[feature.name] = selectedItem;
                 const isFirst = feature.name === characteristics[0].name;
-
                 if (isFirst) {
-                    state.selected = { [feature.name]: selectedItem };
                     state.baseFilter = selectedItem.name || '';
-                    renderForm(characteristics);
-                } else {
-                    state.selected[feature.name] = selectedItem;
-                    updateSKU(characteristics);
                 }
+                renderForm(characteristics);
             });
 
             field.appendChild(select);

@@ -31,6 +31,8 @@ function pc_render_characteristics_metabox($post) {
             echo '<input type="text" name="characteristics[' . $index . '][items][' . $i . '][name]" value="' . esc_attr($item['name']) . '" placeholder="Nombre">';
             echo '<input type="text" name="characteristics[' . $index . '][items][' . $i . '][sku]" value="' . esc_attr($item['sku']) . '" placeholder="SKU">';
             echo '<input type="number" step="0.01" name="characteristics[' . $index . '][items][' . $i . '][price]" value="' . esc_attr($item['price']) . '" placeholder="Precio">';
+            echo '<input type="text" name="characteristics[' . $index . '][items][' . $i . '][hide_if_feature]" value="' . esc_attr($item['hide_if_feature'] ?? '') . '" placeholder="Ocultar si característica">';
+echo '<input type="text" name="characteristics[' . $index . '][items][' . $i . '][hide_if_value]" value="' . esc_attr($item['hide_if_value'] ?? '') . '" placeholder="Valor de la característica">';
             echo '</div>';
         }
         echo '</div>';
